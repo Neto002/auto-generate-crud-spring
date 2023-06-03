@@ -1,0 +1,57 @@
+package $packageName.controllers;
+
+import $packageName.data.vo.v1.$endpointCapitalNameVO;
+import $packageName.services.$endpointCapitalNameServices;
+import $packageName.util.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+
+@RestController
+@RequestMapping("/api/$endpointName/v1")
+public class $endpointCapitalNameController {
+
+    @Autowired
+    private $endpointCapitalNameServices service;
+
+    @GetMapping()
+    public ResponseEntity<PagedModel<EntityModel<$endpointCapitalNameVO>>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "description", defaultValue = "asc") String direction
+    ) {
+        Direction sortDirection = direction.equalsIgnoreCase("desc") ? Direction.DESC : Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "title"));
+        return ResponseEntity.ok(service.findAll(pageable));
+    }
+
+    @GetMapping(value = "/{id}")
+    public $endpointCapitalNameVO findById(@PathVariable(value = "id") Long id) {
+        return service.findById(id);
+    }
+
+    @PostMapping()
+    public $endpointCapitalNameVO create(@RequestBody $endpointCapitalNameVO $endpointName) {
+        return service.create($endpointName);
+    }
+
+    @PutMapping()
+    public $endpointCapitalNameVO update(@RequestBody $endpointCapitalNameVO $endpointName) {
+        return service.update($endpointName);
+    }
+
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}

@@ -1,0 +1,101 @@
+package $packageName.services;
+
+import $packageName.controllers.$endpointCapitalNameController;
+import $packageName.data.vo.v1.$endpointCapitalNameVO;
+import $packageName.exceptions.RequiredObjectIsNullException;
+import $packageName.exceptions.ResourceNotFoundException;
+import $packageName.mapper.DozerMapper;
+import $packageName.model.$endpointCapitalName;
+import $packageName.repository.$endpointCapitalNameRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.logging.Logger;
+
+@Service
+public class $endpointCapitalNameServices {
+
+    private Logger logger = Logger.getLogger($endpointCapitalNameServices.class.getName());
+
+    @Autowired
+    $endpointCapitalNameRepository repository;
+
+    @Autowired
+    PagedResourcesAssembler<$endpointCapitalNameVO> assembler;
+
+    public PagedModel<EntityModel<$endpointCapitalNameVO>> findAll(Pageable pageable) {
+
+        logger.info("Finding all $endpointCapitalName!");
+
+        Page<$endpointCapitalName> $endpointCapitalNamePage = repository.findAll(pageable);
+
+        Page<$endpointCapitalNameVO> $endpointCapitalNameVosPage = $endpointCapitalNamePage.map(o ->
+                DozerMapper.parseObject(o, $endpointCapitalNameVO.class));
+        $endpointCapitalNameVosPage.map(o ->
+                o.add(linkTo(methodOn($endpointCapitalNameController.class).findById(o.getKey())).withSelfRel()));
+
+        Link link = linkTo(methodOn($endpointCapitalNameController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
+
+        return assembler.toModel($endpointCapitalNameVosPage, link);
+    }
+
+    public $endpointCapitalNameVO findById(Long id) {
+
+        logger.info("Finding one $endpointCapitalName!");
+
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+        var vo = DozerMapper.parseObject(entity, $endpointCapitalNameVO.class);
+        vo.add(linkTo(methodOn($endpointCapitalNameController.class).findById(id)).withSelfRel());
+        return vo;
+    }
+
+    public $endpointCapitalNameVO create($endpointCapitalNameVO $endpointCapitalName) {
+
+        if ($endpointCapitalName == null) throw new RequiredObjectIsNullException();
+
+        logger.info("Creating one $endpointCapitalName!");
+        var entity = DozerMapper.parseObject($endpointCapitalName, $endpointCapitalName.class);
+        var vo =  DozerMapper.parseObject(repository.save(entity), $endpointCapitalNameVO.class);
+        vo.add(linkTo(methodOn($endpointCapitalNameController.class).findById(vo.getKey())).withSelfRel());
+        return vo;
+    }
+
+    public $endpointCapitalNameVO update($endpointCapitalNameVO $endpointCapitalName) {
+
+        if ($endpointCapitalName == null) throw new RequiredObjectIsNullException();
+
+        logger.info("Updating one $endpointCapitalName!");
+
+        var entity = repository.findById($endpointCapitalName.getKey())
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+
+        entity.setAuthor($endpointCapitalName.getAuthor());
+        entity.setLaunchDate($endpointCapitalName.getLaunchDate());
+        entity.setPrice($endpointCapitalName.getPrice());
+        entity.setTitle($endpointCapitalName.getTitle());
+
+        var vo =  DozerMapper.parseObject(repository.save(entity), $endpointCapitalNameVO.class);
+        vo.add(linkTo(methodOn($endpointCapitalNameController.class).findById(vo.getKey())).withSelfRel());
+        return vo;
+    }
+
+    public void delete(Long id) {
+
+        logger.info("Deleting one $endpointCapitalName!");
+
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+        repository.delete(entity);
+    }
+}
