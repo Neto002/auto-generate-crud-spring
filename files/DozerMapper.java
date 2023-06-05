@@ -1,4 +1,4 @@
-package com.neto.mapper;
+package com.neto.test.mapper;
 
 import com.github.dozermapper.core.DozerBeanMapperBuilder;
 import com.github.dozermapper.core.Mapper;

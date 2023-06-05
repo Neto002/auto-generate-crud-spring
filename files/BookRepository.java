@@ -1,6 +1,6 @@
-package com.neto.repository;
+package com.neto.test.repository;
 
-import com.neto.model.Book;
+import com.neto.test.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,12 +1,12 @@
-package com.neto.services;
+package com.neto.test.services;
 
-import com.neto.controllers.BookController;
-import com.neto.data.vo.v1.BookVO;
-import com.neto.exceptions.RequiredObjectIsNullException;
-import com.neto.exceptions.ResourceNotFoundException;
-import com.neto.mapper.DozerMapper;
-import com.neto.model.Book;
-import com.neto.repository.BookRepository;
+import com.neto.test.controllers.BookController;
+import com.neto.test.data.vo.v1.BookVO;
+import com.neto.test.exceptions.RequiredObjectIsNullException;
+import com.neto.test.exceptions.ResourceNotFoundException;
+import com.neto.test.mapper.DozerMapper;
+import com.neto.test.model.Book;
+import com.neto.test.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

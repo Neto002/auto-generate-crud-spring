@@ -1,8 +1,8 @@
-package com.neto.controllers;
+package com.neto.test.controllers;
 
-import com.neto.data.vo.v1.BookVO;
-import com.neto.services.BookServices;
-import com.neto.util.MediaType;
+import com.neto.test.data.vo.v1.BookVO;
+import com.neto.test.services.BookServices;
+import com.neto.test.util.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
